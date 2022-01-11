@@ -177,7 +177,21 @@ void Codegen::LowerExpr(const Scope &scope, const Expr &expr)
     case Expr::Kind::CALL: {
       return LowerCallExpr(scope, static_cast<const CallExpr &>(expr));
     }
+    case Expr::Kind::INT: {
+        return LowerIntExpr(scope, static_cast<const IntExpr &>(expr));
+    }
+
   }
+}
+
+
+//------------------------------------------------------------------------------
+
+void Codegen::LowerIntExpr(const Scope &scope, const IntExpr &expr)
+{
+  depth_ +=1;
+  Emit<Opcode>(Opcode::PUSH_INT);
+  Emit<int64_t>(expr.GetValue());
 }
 
 // -----------------------------------------------------------------------------
@@ -247,6 +261,8 @@ void Codegen::LowerFuncDecl(const Scope &scope, const FuncDecl &decl)
   assert(depth_ == 0 && "invalid stack depth on function exit");
   func_ = nullptr;
 }
+
+
 
 // -----------------------------------------------------------------------------
 Codegen::Label Codegen::MakeLabel()

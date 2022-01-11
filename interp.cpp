@@ -79,6 +79,13 @@ void Interp::Run()
       case Opcode::STOP: {
         return;
       }
+
+      case Opcode::PUSH_INT:
+      {
+        auto number = prog_.Read<int64_t>(pc_);
+        Push<int64_t>(number);
+        continue;
+      }
     }
   }
 }
